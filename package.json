@@ -9,7 +9,7 @@
   ],
   "author": "yuhan.wyh<yuhan.wyh@alibaba-inc.com>",
   "dependencies": {
-    "coffee-script-es6" : "*",
+    "coffee-script"     : "*",
     "cheerio"           : "*",
     "thunkify"          : "*",
     "request"           : "*",
