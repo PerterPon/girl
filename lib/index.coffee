@@ -57,6 +57,8 @@ class Index
           zodiac
         )
         VALUES ( :data )
+        ON DUPLICATE KEY UPDATE 
+          con_id = VALUES( con_id );
         """
       for item, idx in userInfo
         { realUid:uid } = item
@@ -68,7 +70,6 @@ class Index
             'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36'
         detail  = yield request detailReqOption
         [ trash, body ] = detail
-        # data.push @parseDetail uid, body
         yield db.query sql, { data : @parseDetail uid, body }
         console.log "insert #{uid} completed!"
     catch e
