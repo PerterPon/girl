@@ -28,12 +28,12 @@ class Index
     db.query = thunkify db.query
     exec     = thunkify exec
 
-  run : co ->
+  run : co.wrap ->
     while true
-      @beginCycle()
+      yield @beginCycle
       yield @sleep 1000
 
-  beginCycle : co ->
+  beginCycle : ->
     try
       count++
       list = yield exec "curl -d 'sex=f&key=&stc=sex=f&key=&stc=1%3A33%2C2%3A24.24%2C3%3A160.175%2C23%3A1&sn=default&sv=1&p=#{count}&f=select&listStyle=bigPhoto&pri_uid=0&jsversion=v5' http://search.jiayuan.com/v2/search_v2.php"
@@ -108,8 +108,3 @@ class Index
     setTimeout done, time
 
 ( new Index ).run()
-
-# module.exports =
-#   run : ->
-#     index = new Index
-#     index.run()
