@@ -37,7 +37,7 @@ class Index
 
   beginCycle : ->
     try
-      list = yield exec "curl -d 'sex=f&key=&stc=sex=f&key=&stc=1%3A33%2C2%3A24.24%2C3%3A160.175%2C23%3A1&sn=default&sv=1&p=#{count}&f=select&listStyle=bigPhoto&pri_uid=0&jsversion=v5' http://search.jiayuan.com/v2/search_v2.php"
+      list = yield exec "curl -d 'sex=f&key=&stc=sex=f&key=&stc=1%3A33%2C2%3A23.25%2C3%3A160.175%2C23%3A1&sn=default&sv=1&p=#{count}&f=select&listStyle=bigPhoto&pri_uid=0&jsversion=v5' http://search.jiayuan.com/v2/search_v2.php"
       [ body ] = list
       resList = JSON.parse body.replace( '##jiayser##', '' ).replace '##jiayser##//', ''
       { userInfo } = resList
