@@ -31,17 +31,16 @@ class Index
   run : co.wrap ->
     count = 0
     while true
-      console.log "current: #{count}"
       if count >= 500
         count = 0
-      yield @beginCycle ++count
+      console.log "current: #{++count}"
+      yield @beginCycle count
       yield @sleep 1000
 
   beginCycle : ->
     try
-      url = "curl -d 'sex=f&key=&stc=sex=f&key=&stc=1%3A33%2C2%3A23.25%2C3%3A160.172%2C23%3A1&sn=default&sv=1&p=#{count}&f=select&listStyle=bigPhoto&    pri_uid=0&jsversion=v5' http://search.jiayuan.com/v2/search_v2.php"
-      console.log url
-      list = yield exec "curl -d 'sex=f&key=&stc=sex=f&key=&stc=1%3A33%2C2%3A23.25%2C3%3A160.172%2C23%3A1&sn=default&sv=1&p=#{count}&f=select&listStyle=bigPhoto&pri_uid=0&jsversion=v5' http://search.jiayuan.com/v2/search_v2.php"
+      url = "curl -d 'sex=f&key=&stc=sex=f&key=&stc=1%3A33%2C2%3A23.25%2C3%3A160.172%2C23%3A1&sn=default&sv=1&p=#{count}&f=select&listStyle=bigPhoto&pri_uid=0&jsversion=v5' http://search.jiayuan.com/v2/search_v2.php"
+      list = yield exec url
       [ body ] = list
       resList = JSON.parse body.replace( '##jiayser##', '' ).replace '##jiayser##//', ''
       { userInfo } = resList
@@ -75,8 +74,14 @@ class Index
             'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36'
         detail  = yield request detailReqOption
         [ trash, body ] = detail
-        yield db.query sql, { data : @parseDetail uid, body }
-        console.log "insert #{uid} completed!"
+        res = yield db.query sql, { data : @parseDetail uid, body }
+        { insertId } = res
+        if insertId > 0
+          console.log '======================'
+          console.log 'new rows'
+          console.log '======================'
+        else
+          console.log "update #{uid} completed!"
     catch e
       console.log e
 
